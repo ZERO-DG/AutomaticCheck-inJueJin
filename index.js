@@ -1,6 +1,8 @@
+//需要使用的包文件
 const axios = require("axios");
 const schedule = require("node-schedule");
-const { nuggets, pushPlus } = require("./config"); //相关参数保存在文件内
+//相关参数保存在文件内
+const { nuggets, pushPlus } = require("./config");
 
 /**
  * 获取当前时间的格式化时间
@@ -119,7 +121,7 @@ const luckDraw = async () => {
 //定时触发任务
 const signTask = () => {
   //每天在6:00-6:10随机签到
-  schedule.scheduleJob("0 40 17 * * *", () => {
+  schedule.scheduleJob("0 0 6 * * *", () => {
     setTimeout(() => {
       hacpaiSignRequest(); //签到函数
     }, Math.random() * 10 * 60 * 1000)
