@@ -59,9 +59,13 @@ const hacpaiSignRequest = async () => {
     headers,
   });
   if (res && res.data) {
-    let jsonMsg = JSON.stringify(res.data);
-    console.log(`\n ${jsonMsg} \n \n ------ ${getNowTime(`toLocaleTimeString`)} 签到成功 ------\n`);
-    pushMsg(`掘金签到结果`, res.data); //签到成功后推送消息
+    console.log(`\n ${JSON.stringify(res.data)} \n \n ------ ${getNowTime(`toLocaleTimeString`)} 签到成功 ------\n`);
+    //签到成功后推送消息
+    if (res.data.err_no == 0) {
+      pushMsg(`掘金签到结果`, { '获得': `${res.data.data.incr_point}矿石`, '总计': `${res.data.data.sum_point}矿石` })
+    } else {
+      pushMsg(`掘金签到结果`, res.data);
+    }
     //签到成功后，30s内查询免费抽奖次数
     setTimeout(() => {
       freeCheck();
@@ -85,8 +89,8 @@ const freeCheck = async () => {
     headers,
   });
   if (res && res.data) {
-    console.log(`\n ------ 获得免费抽奖次数：${res.data.free_count || 0} ------\n`);
-    if (res.data.free_count > 0) {
+    console.log(`\n ------ 获得免费抽奖次数：${res.data.data.free_count || 0} ------\n`);
+    if (res.data.data.free_count > 0) {
       //如果有免费抽奖次数直接开始抽奖
       luckDraw();
     }
